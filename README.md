@@ -60,6 +60,7 @@ Use one or the other for this plugin: both register the same plugin (same uid), 
 
 - Presets work: the build never pointed the engine at its presets folder (MODULE_DIR); now a PATCH browser shows the preset name.
 - **Pitch clamped (2026-10-02)**: the module's firmware keeps pitch in 0..16383, but this port's note + 44.1 kHz correction + FM + bend reached ~19800, and high notes on FLUTED read past the flute's body-filter table. `src/dsp/braids/macro_oscillator.h` under `MPC_PORT`; diff in `upstream-changes.diff`. Also `-fwrapv` (stmlib's fixed-point maths relies on wrap-around, as on the module's ARM). Found with `dev-tools/fuzz`.
+- **COMB delay at low notes (2026-11-15)**: `ComputeDelay` shifts by `12 - num_shifts`, and on COMB below about MIDI note 35 with TIMBRE down the count goes negative (a huge `size_t`): undefined, 0 on 32-bit ARM, 0 to 15 on AArch64. It now returns 0 there on both. `src/dsp/braids/digital_oscillator.cc` under `MPC_PORT`; diff in `upstream-changes.diff`. Found with UBSan on a 64-bit build ([BUILD-AARCH64.md](BUILD-AARCH64.md)).
 - New touchscreen page from its Google Stitch design (`design/`): the design's artwork as the background, its own knob art, live names and values, and controls the design left out added in its style (see RESKINNING.md).
 - Presets in MPC's PRESET menu (2026-10-03): its 10 presets are VST programs (vst.json `programs`), so the PRESET
   dropdown in the plugin header, also on the arrangement screen, lists and loads them.

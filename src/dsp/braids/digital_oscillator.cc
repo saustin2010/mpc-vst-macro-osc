@@ -87,6 +87,14 @@ uint32_t DigitalOscillator::ComputeDelay(int16_t midi_pitch) {
   uint32_t a = lut_oscillator_delays[ref_pitch >> 4];
   uint32_t b = lut_oscillator_delays[(ref_pitch >> 4) + 1];
   uint32_t delay = a + (static_cast<int32_t>(b - a) * (ref_pitch & 0xf) >> 4);  
+#ifdef MPC_PORT
+  // aarch64 build (2026-11-15): more than 12 octaves below the table (COMB, low notes with TIMBRE down) made the
+  // shift count negative, i.e. huge as a size_t: undefined in C++. A 32-bit ARM shifts everything out and gives 0;
+  // AArch64 takes the count modulo 32 and gives 0..15. Give 0 on both (found with UBSan, all-models sweep).
+  if (num_shifts > 12) {
+    return 0;
+  }
+#endif
   delay >>= 12 - num_shifts;
   return delay;
 }
