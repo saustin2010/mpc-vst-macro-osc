@@ -1,0 +1,18 @@
+[SYN] Macro Osc - unofficial 64-bit (aarch64) build for Gen 2 MPCs
+
+Sound engine: Braids, by Émilie Gillet (Mutable Instruments), MIT licence.
+  https://github.com/pichenettes/eurorack/tree/master/braids
+Engine wrapper (voices, filter, envelopes, presets): the Schwung module "Braids" v0.2.8,
+  port by charlesvestal, MIT licence.  https://github.com/charlesvestal/schwung-braids
+MPC port, touch screen and presets packaging: saustin2010, release 1.1.1.
+  https://github.com/saustin2010/mpc-vst-macro-osc
+MPC VST2 wrapper and skin tools: sd88me's mpc-vst-plugins, with saustin2010's changes
+  (commit e3a0af4).  https://github.com/saustin2010/mpc-vst-plugins
+
+This folder: the screen ("Plugin Skins"), version.xml and presets ("braids/") are taken unchanged
+from the published 1.1.1 release zip.  braids.so is the same source compiled for aarch64
+(build-aarch64.sh in the port's repository); plugin.json was added so MPC OS 3.10.1 and later can
+load the folder from "VST2 Plugins".  It is not an official release of any of the projects above.
+
+"Mutable Instruments" and "Braids" are names of Mutable Instruments; this plugin is a derivative
+work and is not affiliated with or endorsed by Mutable Instruments.  Licence text: LICENSE.
